@@ -144,17 +144,33 @@ class Block
   # Return the result of subtracting the other Block (or Blocks) from self.
 
   def subtract (other)
-    result =  if other.covers?(self)
-                []
-              elsif (other.bottom <= top) || (other.top >= bottom)
-                [self]
-              elsif surrounds?(other)
-                split(other)
-              elsif intersects_bottom?(other)
-                [trim_from(other.bottom)]
-              elsif intersects_top?(other)
-                [trim_to(other.top)]
-              end
+    if other.is_a?(Array)
+      result = [self]
+      other.each do |block|
+        temp_arr = []
+        result.each do |item|
+          temp_arr << (item - block)
+        end
+        result = temp_arr.flatten
+      end
+      return result
+    else
+      return subtract_single(other)
+    end
+  end
+
+  def subtract_single (other)
+    if other.covers?(self)
+      []
+    elsif (other.bottom <= top) || (other.top >= bottom)
+      [self]
+    elsif surrounds?(other)
+      split(other)
+    elsif intersects_bottom?(other)
+      [trim_from(other.bottom)]
+    elsif intersects_top?(other)
+      [trim_to(other.top)]
+    end
   end
 
   alias :- :subtract
