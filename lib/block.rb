@@ -134,7 +134,11 @@ class Block
   # Return the result of adding the other Block (or Blocks) to self.
 
   def add (other)
-    # Implement.
+    if overlaps? (other)
+      return [union(other)]
+    else
+      return [self, other].sort_by(&:top)
+    end
   end
   
   # Return the result of subtracting the other Block (or Blocks) from self.
