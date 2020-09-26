@@ -190,6 +190,6 @@ class Block
   end
 
   def merge (others)
-    # Implement.
+    Block.merge(others << self)
   end
 end
