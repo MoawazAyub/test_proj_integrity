@@ -148,8 +148,12 @@ class Block
                 []
               elsif (other.bottom <= top) || (other.top >= bottom)
                 [self]
-              elsif covers?(other)
+              elsif surrounds?(other)
                 split(other)
+              elsif intersects_bottom?(other)
+                [trim_from(other.bottom)]
+              elsif intersects_top?(other)
+                [trim_to(other.top)]
               end
   end
 
